@@ -2,10 +2,12 @@ package day02
 
 import println
 import readInput
+import kotlin.math.max
 
 const val MAX_REDS = 12
 const val MAX_GREENS = 13
 const val MAX_BLUES = 14
+val MAX_COUNTS_PER_COLOR = mapOf("red" to MAX_REDS, "green" to MAX_GREENS, "blue" to MAX_BLUES)
 val COLOR_CUBE_REGEX = """(\d+) (\w+)[,;]?""".toRegex()
 val GAME_ID_REGEX = """^Game (\d+):""".toRegex()
 fun main() {
@@ -15,15 +17,11 @@ fun main() {
             val gameId = GAME_ID_REGEX.find(game)!!.groups[1]!!.value.toInt()
 
             val cubes = game.substringAfter(":")
-            val isPassed = COLOR_CUBE_REGEX.findAll(cubes).all { matchResult ->
-                val (count, color) = matchResult.destructured
-                when (color) {
-                    "red" -> count.toInt() <= MAX_REDS
-                    "green" -> count.toInt() <= MAX_GREENS
-                    "blue" -> count.toInt() <= MAX_BLUES
-                    else -> throw IllegalArgumentException("Unknown color $color")
+            val isPassed = COLOR_CUBE_REGEX.findAll(cubes)
+                .all { matchResult ->
+                    val (count, color) = matchResult.destructured
+                    count.toInt() <= MAX_COUNTS_PER_COLOR[color]!!
                 }
-            }
 
             if (isPassed) gameId else 0
         }
@@ -31,26 +29,18 @@ fun main() {
 
     fun part2(input: List<String>): Int {
         return input.sumOf { game ->
-            var reds = 0
-            var greens = 0
-            var blues = 0
-
+            val maxCubesPerColor = mutableMapOf("red" to 0, "green" to 0, "blue" to 0)
             val cubes = game.substringAfter(":")
             COLOR_CUBE_REGEX.findAll(cubes).forEach { matchResult ->
                 val (count, color) = matchResult.destructured
-                when (color) {
-                    "red" -> reds = maxOf(count.toInt(), reds)
-                    "green" -> greens = maxOf(count.toInt(), greens)
-                    "blue" -> blues = maxOf(count.toInt(), blues)
-                    else -> throw IllegalArgumentException("Unknown color $color")
-                }
+                maxCubesPerColor.merge(color, count.toInt()) { oldValue, newValue -> max(oldValue, newValue) }
             }
 
-            reds * greens * blues
+            maxCubesPerColor["red"]!! * maxCubesPerColor["green"]!! * maxCubesPerColor["blue"]!!
         }
     }
 
-    // test if implementation meets criteria from the description, like:
+// test if implementation meets criteria from the description, like:
     val testInput = readInput("day02/Day02_test")
 
     val part1 = part1(testInput)
