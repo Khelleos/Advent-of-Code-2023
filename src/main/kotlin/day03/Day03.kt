@@ -5,12 +5,12 @@ import readInput
 
 fun main() {
 
-    data class NumberPosition(val number: Int, val row: Int, val colIndexStart: Int, val colIndexEnd: Int)
-    data class SymbolPosition(val row: Int, val col: Int)
+    data class EnginePart(val amount: Int, val rowIndex: Int, val positionIndexStart: Int, val positionIndexEnd: Int)
+    data class SymbolPosition(val rowIndex: Int, val positionIndex: Int)
 
-    fun partCommon(input: List<String>): Pair<MutableList<SymbolPosition>, MutableList<NumberPosition>> {
+    fun partCommon(input: List<String>): Pair<MutableList<SymbolPosition>, MutableList<EnginePart>> {
         val symbolPositions = mutableListOf<SymbolPosition>()
-        val numberPositions = mutableListOf<NumberPosition>()
+        val engineParts = mutableListOf<EnginePart>()
 
         for (rowIndex in input.indices) {
             var colIndex = 0
@@ -28,32 +28,33 @@ fun main() {
                 while (colIndex < input[rowIndex].length && input[rowIndex][colIndex].isDigit()) {
                     numberAsString += input[rowIndex][colIndex++]
                 }
-                numberPositions.add(NumberPosition(numberAsString.toInt(), rowIndex, colIndexStart, colIndex - 1))
+                engineParts.add(EnginePart(numberAsString.toInt(), rowIndex, colIndexStart, colIndex - 1))
             }
         }
 
-        return Pair(symbolPositions, numberPositions)
+        return Pair(symbolPositions, engineParts)
     }
 
     fun part1(input: List<String>): Int {
-        val (symbolPositions, numberPositions) = partCommon(input)
-        return numberPositions.sumOf { np ->
-            val (number, row, colIndexStart, colIndexEnd) = np
-            val isFound = symbolPositions.any { sp ->
-                sp.row in row - 1..row + 1 && sp.col in colIndexStart - 1..colIndexEnd + 1
+        val (symbols, engineParts) = partCommon(input)
+        return engineParts.sumOf { np ->
+            val (amount, rowIndex, positionIndexStart, positionIndexEnd) = np
+            val isAdjacent = symbols.any { sp ->
+                sp.rowIndex in rowIndex - 1..rowIndex + 1 && sp.positionIndex in positionIndexStart - 1..positionIndexEnd + 1
             }
-            if (isFound) number else 0
+            if (isAdjacent) amount else 0
         }
     }
 
     fun part2(input: List<String>): Int {
-        val (symbolPositions, numberPositions) = partCommon(input)
+        val (symbolPositions, engineParts) = partCommon(input)
         return symbolPositions.sumOf { sp ->
-            val numbers =
-                numberPositions.filter { np -> sp.row in np.row - 1..np.row + 1 && sp.col in np.colIndexStart - 1..np.colIndexEnd + 1 }
-                    .map { it.number }
+            val (rowIndex, positionIndex) = sp
+            val adjacentEngineParts =
+                engineParts.filter { np -> rowIndex in np.rowIndex - 1..np.rowIndex + 1 && positionIndex in np.positionIndexStart - 1..np.positionIndexEnd + 1 }
+                    .map { it.amount }
                     .take(2)
-            if (numbers.size == 2) numbers[0] * numbers[1] else 0
+            if (adjacentEngineParts.size == 2) adjacentEngineParts[0] * adjacentEngineParts[1] else 0
         }
     }
 
