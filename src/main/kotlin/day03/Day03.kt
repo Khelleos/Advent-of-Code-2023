@@ -58,16 +58,9 @@ fun main() {
         }
     }
 
-// test if implementation meets criteria from the description, like:
     val testInput = readInput("day03/Day03_test")
-
-    val part1 = part1(testInput)
-    part1.println()
-    check(part1 == 4361)
-
-    val part2 = part2(testInput)
-    part2.println()
-    check(part2 == 467835)
+    check(part1(testInput) == 4361)
+    check(part2(testInput) == 467835)
 
     val input = readInput("day03/Day03")
     part1(input).println()

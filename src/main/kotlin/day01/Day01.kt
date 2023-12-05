@@ -27,8 +27,8 @@ fun main() {
         }.sumOf { "${it.first()}${it.last()}".toInt() }
     }
 
-    // test if implementation meets criteria from the description, like:
     val testInput = readInput("day01/Day01_test")
+    check(part1(testInput) == 142)
     check(part2(testInput) == 281)
 
     val input = readInput("day01/Day01")
