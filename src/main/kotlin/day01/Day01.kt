@@ -1,9 +1,14 @@
 package day01
 
+import day07.main
 import println
-import readInput
+import readPuzzleInput
+import readTestInput
 
 fun main() {
+
+    val packageName = ::main.javaClass.name.substringBefore(".")
+
     fun part1(input: List<String>): Int {
         return input.map {
             it.filter { c -> c.isDigit() }.toList()
@@ -27,11 +32,11 @@ fun main() {
         }.sumOf { "${it.first()}${it.last()}".toInt() }
     }
 
-    val testInput = readInput("day01/Day01_test")
+    val testInput = readTestInput(packageName)
     check(part1(testInput) == 142)
     check(part2(testInput) == 281)
 
-    val input = readInput("day01/Day01")
+    val input = readPuzzleInput(packageName)
     part1(input).println()
     part2(input).println()
 }

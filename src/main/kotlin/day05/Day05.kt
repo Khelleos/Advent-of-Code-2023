@@ -1,11 +1,15 @@
 package day05
 
+import day07.main
 import println
-import readInput
+import readPuzzleInput
+import readTestInput
 import kotlin.math.min
 
 
 fun main() {
+
+    val packageName = ::main.javaClass.name.substringBefore(".")
 
     class Range(val destination: Long, val source: Long, val range: Long)
     class RangeMap(ranges: List<Range>) {
@@ -125,8 +129,8 @@ fun main() {
         return answer
     }
 
-    val testInput = readInput("day05/Day05_test")
-    val input = readInput("day05/Day05")
+    val testInput = readTestInput(packageName)
+    val input = readPuzzleInput(packageName)
 
     check(part1(testInput) == 35L)
     part1(input).println()

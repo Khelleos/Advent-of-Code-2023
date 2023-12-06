@@ -1,11 +1,15 @@
 package day06
 
+import day07.main
 import println
-import readInput
+import readPuzzleInput
+import readTestInput
 
 const val SPEED_UP = 1
 
 fun main() {
+
+    val packageName = ::main.javaClass.name.substringBefore(".")
 
     fun part1(input: List<String>): Int {
         val time = input[0].substringAfter(":").trim().split(" ").filter { it.isNotEmpty() }.map(String::toLong)
@@ -49,11 +53,11 @@ fun main() {
         return count
     }
 
-    val testInput = readInput("day06/Day06_test")
+    val testInput = readTestInput(packageName)
     check(part1(testInput) == 288)
     check(part2(testInput) == 71503)
 
-    val input = readInput("day06/Day06")
+    val input = readPuzzleInput(packageName)
     part1(input).println()
     part2(input).println()
 }

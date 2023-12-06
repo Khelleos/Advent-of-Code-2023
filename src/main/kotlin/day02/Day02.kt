@@ -1,8 +1,12 @@
 package day02
 
+import day07.main
 import println
-import readInput
+import readPuzzleInput
+import readTestInput
+
 import kotlin.math.max
+
 
 const val MAX_REDS = 12
 const val MAX_GREENS = 13
@@ -11,6 +15,8 @@ val MAX_COUNTS_PER_COLOR = mapOf("red" to MAX_REDS, "green" to MAX_GREENS, "blue
 val COLOR_CUBE_REGEX = """(\d+) (\w+)[,;]?""".toRegex()
 val GAME_ID_REGEX = """^Game (\d+):""".toRegex()
 fun main() {
+
+    val packageName = ::main.javaClass.name.substringBefore(".")
 
     fun part1(input: List<String>): Int {
         return input.sumOf { game ->
@@ -35,16 +41,15 @@ fun main() {
                 val (count, color) = matchResult.destructured
                 maxCubesPerColor.merge(color, count.toInt()) { oldValue, newValue -> max(oldValue, newValue) }
             }
-
             maxCubesPerColor["red"]!! * maxCubesPerColor["green"]!! * maxCubesPerColor["blue"]!!
         }
     }
 
-    val testInput = readInput("day02/Day02_test")
+    val testInput = readTestInput(packageName)
     check(part1(testInput) == 8)
     check(part2(testInput) == 2286)
 
-    val input = readInput("day02/Day02")
+    val input = readPuzzleInput(packageName)
     part1(input).println()
     part2(input).println()
 }

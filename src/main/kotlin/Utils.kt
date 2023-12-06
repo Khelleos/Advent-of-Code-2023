@@ -6,7 +6,9 @@ import kotlin.io.path.readLines
 /**
  * Reads lines from the given input txt file.
  */
-fun readInput(name: String) = Path("src/main/resources/$name.txt").readLines()
+fun readTestInput(name: String) = Path("src/main/resources/$name/test.txt").readLines()
+
+fun readPuzzleInput(name: String) = Path("src/main/resources/$name/puzzle.txt").readLines()
 
 /**
  * Converts string to md5 hash.

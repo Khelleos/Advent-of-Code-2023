@@ -1,9 +1,13 @@
 package day03
 
+import day07.main
 import println
-import readInput
+import readPuzzleInput
+import readTestInput
 
 fun main() {
+
+    val packageName = ::main.javaClass.name.substringBefore(".")
 
     data class EnginePart(val amount: Int, val rowIndex: Int, val positionIndexStart: Int, val positionIndexEnd: Int)
     data class SymbolPosition(val rowIndex: Int, val positionIndex: Int)
@@ -58,11 +62,11 @@ fun main() {
         }
     }
 
-    val testInput = readInput("day03/Day03_test")
+    val testInput = readTestInput(packageName)
     check(part1(testInput) == 4361)
     check(part2(testInput) == 467835)
 
-    val input = readInput("day03/Day03")
+    val input = readPuzzleInput(packageName)
     part1(input).println()
     part2(input).println()
 }

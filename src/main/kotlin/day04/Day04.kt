@@ -1,10 +1,14 @@
 package day04
 
+import day07.main
 import println
-import readInput
+import readPuzzleInput
+import readTestInput
 import kotlin.math.pow
 
 fun main() {
+
+    val packageName = ::main.javaClass.name.substringBefore(".")
 
     data class Card(val winningNumbers: List<Int>, val availableNumbers: List<Int>)
 
@@ -47,11 +51,11 @@ fun main() {
         return numberOfScratchCards.sum()
     }
 
-    val testInput = readInput("day04/Day04_test")
+    val testInput = readTestInput(packageName)
     check(part1(testInput) == 13)
     check(part2(testInput) == 30)
 
-    val input = readInput("day04/Day04")
+    val input = readPuzzleInput(packageName)
     part1(input).println()
     part2(input).println()
 }
